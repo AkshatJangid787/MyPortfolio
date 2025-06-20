@@ -101,7 +101,7 @@ const About = () => {
       </section>
 
       {/* Achievements Section */}
-      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 bg-gray-900/50">
+      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 bg-psyco-black-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-psyco-orange-light mb-4 flex items-center justify-center gap-3">
@@ -133,7 +133,7 @@ const About = () => {
       </section>
 
       {/* Experience Section */}
-      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 bg-gray-900/50">
+      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 bg-[#121212]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-psyco-orange-light mb-4 flex items-center justify-center gap-3">
@@ -189,7 +189,7 @@ const About = () => {
       </section>
 
       {/* Certifications Section */}
-      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12">
+      <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12 bg-psyco-black-light">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-psyco-orange-light mb-4 flex items-center justify-center gap-3">
