@@ -3,6 +3,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes slide-in {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 7%;

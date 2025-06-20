@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Menu, X, Code2 } from 'lucide-react';
@@ -7,24 +6,33 @@ import { cn } from '@/lib/utils';
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [atTop, setAtTop] = useState(true);
   const location = useLocation();
 
+  // Scroll effects
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 20);
+      setAtTop(scrollY === 0);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close menu on route change
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  // Lock scroll on menu open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -42,6 +50,7 @@ const Navbar = () => {
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
         <NavLink to="/" className="flex items-center group">
           <div className="flex items-center space-x-3 transition-all duration-300 group-hover:scale-105">
             <div className="relative">
@@ -56,7 +65,7 @@ const Navbar = () => {
           </div>
         </NavLink>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Links */}
         <div className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <NavLink
@@ -76,20 +85,22 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Navigation Toggle */}
-        <button
-          className="md:hidden text-white hover:text-orange-400 transition-all duration-300 hover:scale-110 relative group"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="absolute inset-0 bg-orange-500/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-          {isOpen ? <X size={24} className="relative z-10" /> : <Menu size={24} className="relative z-10" />}
-        </button>
+        {/* Mobile Icon - show only if at top OR menu open */}
+        {(atTop || isOpen) && (
+          <button
+            className="md:hidden text-white hover:text-orange-400 transition-all duration-300 hover:scale-110 relative group"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <div className="absolute inset-0 bg-orange-500/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
+            {isOpen ? <X size={24} className="relative z-10" /> : <Menu size={24} className="relative z-10" />}
+          </button>
+        )}
       </div>
 
-      {/* Mobile Navigation Menu */}
+      {/* Mobile Navigation */}
       <div
         className={cn(
-          'fixed inset-0 z-40 glassmorphism pt-24 px-8 transition-all duration-500 ease-in-out transform md:hidden backdrop-blur-xl',
+          'fixed inset-0 z-40 bg-[#0f0f0f] bg-opacity-95 pt-24 px-8 transition-all duration-500 ease-in-out transform md:hidden backdrop-blur-md shadow-lg',
           isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
         )}
       >
@@ -104,9 +115,9 @@ const Navbar = () => {
                   isActive && 'text-orange-500 bg-orange-500/20'
                 )
               }
-              style={{ 
+              style={{
                 animationDelay: `${index * 100}ms`,
-                animation: isOpen ? 'slide-in 0.5s ease-out forwards' : undefined
+                animation: isOpen ? 'slide-in 0.5s ease-out forwards' : undefined,
               }}
             >
               {link.name}
@@ -115,9 +126,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Background overlay for mobile menu */}
+      {/* Backdrop when menu is open */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-30 md:hidden backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
         />
