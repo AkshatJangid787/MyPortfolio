@@ -24,7 +24,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-medium mb-4 pb-2 border-b border-orange-500/10">
+            <h3 className="text-psyco-orange-light font-medium mb-4 pb-2 border-b border-orange-500/10">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -34,6 +34,14 @@ const Footer = () => {
                   className="text-gray-300 hover:text-orange-400 transition-colors"
                 >
                   Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/about" 
+                  className="text-gray-300 hover:text-orange-400 transition-colors"
+                >
+                  About
                 </NavLink>
               </li>
               <li>
@@ -59,7 +67,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-medium mb-4 pb-2 border-b border-orange-500/10">
+            <h3 className="text-psyco-orange-light font-medium mb-4 pb-2 border-b border-orange-500/10">
               Contact Me
             </h3>
             <ul className="space-y-4">

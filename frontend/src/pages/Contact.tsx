@@ -67,7 +67,7 @@ const Contact = () => {
                       name="firstName"
                       type="text"
                       required
-                      className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 text-orange-400"
+                      className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 bg-gray-900 text-orange-400 placeholder:text-gray-600"
                       placeholder="Akshat"
                     />
                   </div>
@@ -80,7 +80,7 @@ const Contact = () => {
                       name="lastName"
                       type="text"
                       required
-                      className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 text-orange-400"
+                      className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 bg-gray-900 text-orange-400 placeholder:text-gray-600"
                       placeholder="Jangid"
                     />
                   </div>
@@ -95,7 +95,7 @@ const Contact = () => {
                     name="email"
                     type="email"
                     required
-                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 text-orange-400"
+                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 bg-gray-900 text-orange-400 placeholder:text-gray-600"
                     placeholder="akshatjangid14@gmail.com"
                   />
                 </div>
@@ -109,7 +109,7 @@ const Contact = () => {
                     name="subject"
                     type="text"
                     required
-                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 text-orange-400"
+                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 bg-gray-900 text-orange-400 placeholder:text-gray-600"
                     placeholder="Project Collaboration"
                   />
                 </div>
@@ -123,7 +123,7 @@ const Contact = () => {
                     name="message"
                     required
                     rows={6}
-                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 resize-none text-orange-400"
+                    className="bg-psyco-black-DEFAULT border-psyco-green-muted/50 resize-none bg-gray-900 text-orange-400 placeholder:text-gray-600"
                     placeholder="Tell me about your project or what you'd like to discuss..."
                   />
                 </div>

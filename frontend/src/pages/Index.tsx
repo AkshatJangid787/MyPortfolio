@@ -78,6 +78,15 @@ const Index = () => {
                 When I'm not coding, you can find me exploring new technologies, contributing to 
                 open-source projects, or sharing knowledge with the developer community.
               </p>
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+                <Link
+                  to="/about"
+                  className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 flex items-center btn-glow"
+                >
+                  Learn More About Me
+                  <MoveRight className="ml-2 h-5 w-5" />
+                </Link>
+              </div>
               <div className="flex space-x-4">
                 <a 
                   href="https://github.com/AkshatJangid787"
