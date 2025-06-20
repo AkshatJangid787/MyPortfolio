@@ -8,7 +8,6 @@ interface ServiceCardProps {
   title: string;
   description: string;
   icon: React.ReactNode;
-  imageSrc: string;
   link: string;
   className?: string;
   style?: React.CSSProperties;
@@ -18,7 +17,6 @@ const ServiceCard = ({
   title,
   description,
   icon,
-  imageSrc,
   link,
   className,
   style
@@ -33,11 +31,6 @@ const ServiceCard = ({
     >
       <div className="relative h-48 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-psyco-black-DEFAULT to-transparent z-10"></div>
-        <img 
-          src={imageSrc} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
         <div className="absolute top-4 left-4 z-20 bg-psyco-black-card p-2 rounded-lg">
           <div className="text-psyco-orange-DEFAULT">
             {icon}

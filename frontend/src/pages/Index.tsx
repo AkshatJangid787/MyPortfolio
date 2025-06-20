@@ -71,7 +71,7 @@ const Index = () => {
             <div>
               <h2 className="text-3xl font-bold text-psyco-orange-light mb-6">About Me</h2>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                I'm a passionate full-stack developer. I specialize in modern web technologies 
+                I'm a passionate <span className="text-orange-500 font-bold text-glow">Full-Stack Developer</span>. I specialize in modern web technologies 
                 and love turning complex problems into simple, beautiful designs.
               </p>
               <p className="text-gray-300 mb-8 leading-relaxed">
