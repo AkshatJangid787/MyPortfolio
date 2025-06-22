@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Twitter } from "lucide-react";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid"; // Make sure this path is correct
+import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
+import axios from "@/utils/axios"; // ✅ make sure axios instance is correctly configured
 
 const Skeleton = () => (
   <div className="w-full h-full bg-neutral-800 rounded-xl animate-pulse min-h-[400px]" />
@@ -12,15 +13,21 @@ const Posts = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  window.scrollTo(0, 0);
+    window.scrollTo(0, 0);
 
-  fetch(`${import.meta.env.VITE_API_URL}/tweets/all`)
-    .then((res) => res.json())
-    .then((data) => setTweetIds(data.tweets))
-    .catch((err) => console.error("Failed to load tweets", err))
-    .finally(() => setLoading(false));
-}, []);
+    const fetchTweets = async () => {
+      try {
+        const res = await axios.get("/tweets/all");
+        setTweetIds(res.data.tweets || []);
+      } catch (err) {
+        console.error("Failed to load tweets", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchTweets();
+  }, []);
 
   return (
     <div className="pt-20 bg-[#121212] min-h-screen">

@@ -168,7 +168,6 @@ const Index = () => {
                   title={project.title}
                   description={project.description}
                   tags={project.techStack || []}
-                  imageSrc={project.imageSrc || "/default-image.jpg"}
                   liveUrl={project.liveLink || "#"}
                   githubUrl={project.githubLink || "#"}
                   className="animate-fade-in"
