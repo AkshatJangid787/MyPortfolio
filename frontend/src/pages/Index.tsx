@@ -1,69 +1,56 @@
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
 import SkillCard from "@/components/SkillCard";
 import ProjectCard from "@/components/ProjectCard";
-import { Link, NavLink } from "react-router-dom";
-import { Code, Palette, Database, Globe, MoveRight, User, Mail, Github, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Code, Palette, Database, MoveRight, User, Github, Linkedin } from "lucide-react";
+import axios from "@/utils/axios";
 
 const Index = () => {
-  // Scroll to top on page load
+  const [featuredProjects, setFeaturedProjects] = useState([]);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const res = await axios.get('/projects');
+        const sorted = [...res.data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setFeaturedProjects(sorted.slice(0, 3));
+      } catch (err) {
+        console.error("Failed to fetch projects:", err);
+      } finally {
+        setLoadingProjects(false);
+      }
+    };
+    fetchProjects();
   }, []);
 
   const skills = [
     {
       title: "Frontend Development",
       description: "React, TypeScript, Tailwind CSS, and modern web technologies",
-      icon: <Code size={24} />,
-      imageSrc: "/lovable-uploads/708f9e32-840d-46a4-aaa4-75ad2689e16f.png"
+      icon: <Code size={24} />
     },
     {
       title: "UI/UX Design",
       description: "Creating beautiful and intuitive user interfaces and experiences",
-      icon: <Palette size={24} />,
-      imageSrc: "/lovable-uploads/becfc2e3-b59f-4f86-afca-b9f6fc7b7c14.png"
+      icon: <Palette size={24} />
     },
     {
       title: "Full Stack Development",
       description: "Backend development with databases and API integration",
-      icon: <Database size={24} />,
-      imageSrc: "/lovable-uploads/03e83f18-76a1-4349-a197-dbde03a93343.png"
-    }
-  ];
-
-  const featuredProjects = [
-    {
-      title: "E-Commerce Platform",
-      description: "Full-stack e-commerce solution with React, Node.js, and PostgreSQL",
-      imageSrc: "/lovable-uploads/48e75083-18aa-4df9-bc91-8515485aa465.png",
-      tags: ["React", "Node.js", "PostgreSQL"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Task Management App",
-      description: "Collaborative task management tool with real-time updates",
-      imageSrc: "/lovable-uploads/752a1366-6aea-49ad-be21-341fe7476d14.png",
-      tags: ["React", "Firebase", "TypeScript"],
-      liveUrl: "#",
-      githubUrl: "#"
-    },
-    {
-      title: "Weather Dashboard",
-      description: "Real-time weather application with interactive charts and forecasts",
-      imageSrc: "/lovable-uploads/ada582c7-709e-480e-8494-1461b602567c.png",
-      tags: ["React", "API Integration", "Charts"],
-      liveUrl: "#",
-      githubUrl: "#"
+      icon: <Database size={24} />
     }
   ];
 
   return (
     <div>
       <HeroSection />
-      
+
       {/* About Section */}
       <section className="py-20 px-6 md:px-12 bg-psyco-black-light">
         <div className="max-w-7xl mx-auto">
@@ -119,7 +106,7 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Skills Section */}
       <section className="py-20 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
@@ -151,8 +138,8 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
-      {/* Projects Section */}
+
+      {/* Featured Projects Section */}
       <section className="py-20 px-6 md:px-12 bg-psyco-black-light">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12">
@@ -170,20 +157,29 @@ const Index = () => {
               <MoveRight className="ml-1 h-4 w-4" />
             </Link>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project, index) => (
-              <ProjectCard
-                key={index}
-                {...project}
-                className="animate-fade-in"
-                style={{ animationDelay: `${index * 100}ms` }}
-              />
-            ))}
-          </div>
+
+          {loadingProjects ? (
+            <p className="text-gray-500 text-center">Loading projects...</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featuredProjects.map((project, index) => (
+                <ProjectCard
+                  key={project._id}
+                  title={project.title}
+                  description={project.description}
+                  tags={project.techStack || []}
+                  imageSrc={project.imageSrc || "/default-image.jpg"}
+                  liveUrl={project.liveLink || "#"}
+                  githubUrl={project.githubLink || "#"}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
-      
+
       {/* CTA Section */}
       <section className="py-20 px-6 md:px-12 bg-[#121212] relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">

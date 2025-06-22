@@ -9,6 +9,10 @@ const Navbar = () => {
   const [atTop, setAtTop] = useState(true);
   const location = useLocation();
 
+  // ✅ Hide navbar for admin routes
+  const hideNavbar = location.pathname.startsWith('/akshu-secret-login');
+  if (hideNavbar) return null;
+
   // Scroll effects
   useEffect(() => {
     const handleScroll = () => {
@@ -39,6 +43,7 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
     { name: 'Skills', path: '/services' },
     { name: 'Projects', path: '/references' },
+    { name: 'Posts', path: '/posts' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -85,7 +90,7 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Mobile Icon - show only if at top OR menu open */}
+        {/* Mobile Icon */}
         {(atTop || isOpen) && (
           <button
             className="md:hidden text-white hover:text-orange-400 transition-all duration-300 hover:scale-110 relative group"

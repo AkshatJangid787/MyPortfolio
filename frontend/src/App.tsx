@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import About from "./pages/About";
+import Posts from "./pages/Posts";
 import Preloader from "./components/Preloader";
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
@@ -49,10 +50,11 @@ const App = () => {
           <main className="min-h-screen">
             <Routes>
               <Route path="/akshu-secret-login" element={<AdminLogin />} />
-               <Route path="/akshu-secret-login/dashboard" element={<AdminDashboard />} />
+              <Route path="/akshu-secret-login/dashboard" element={<AdminDashboard />} />
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/posts" element={<Posts />} />
               <Route path="/references" element={<References />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />

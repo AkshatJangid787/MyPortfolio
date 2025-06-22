@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const authRoutes = require('./routes/authRoutes');
 const projectRoutes = require('./routes/projectRoutes');
 const skillRoutes = require('./routes/skillRoutes');
+const tweetRoutes = require("./routes/tweetRoutes");
+
 
 dotenv.config();
 connectDB();
@@ -29,6 +31,7 @@ app.use(
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
+app.use("/api/tweets", tweetRoutes);
 
 // ✅ Server Start
 const PORT = process.env.PORT || 5000;

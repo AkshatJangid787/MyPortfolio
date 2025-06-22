@@ -20,8 +20,8 @@ const AdminLogin = () => {
     if (!form.username || !form.password) return alert('Please enter both fields');
     setLoading(true);
     try {
-      await axios.post('/auth/login', form); // 🍪 Cookie set here
-      navigate('/admin/dashboard');
+      await axios.post('/auth/login', form);
+      navigate('/akshu-secret-login/dashboard');
     } catch (err) {
       alert('Invalid credentials');
     } finally {
