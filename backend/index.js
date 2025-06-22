@@ -22,8 +22,8 @@ app.use(express.json());
 // ✅ Secure CORS config
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // e.g. http://localhost:3000
-    credentials: true, // allow cookies to be sent
+    origin: process.env.CLIENT_URL,
+    credentials: true,
   })
 );
 
