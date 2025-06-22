@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000/api', // or your deployed backend
-  withCredentials: true, // ✅ include cookies in all requests
+  baseURL: process.env.VITE_API_URL,
+  withCredentials: true, 
 });
 
 export default instance;

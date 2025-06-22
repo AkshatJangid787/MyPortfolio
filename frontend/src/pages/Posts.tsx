@@ -12,14 +12,15 @@ const Posts = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 
-    fetch("http://localhost:3000/api/tweets/all")
-      .then((res) => res.json())
-      .then((data) => setTweetIds(data.tweets))
-      .catch((err) => console.error("Failed to load tweets", err))
-      .finally(() => setLoading(false));
-  }, []);
+  fetch(`${import.meta.env.VITE_API_URL}/tweets/all`)
+    .then((res) => res.json())
+    .then((data) => setTweetIds(data.tweets))
+    .catch((err) => console.error("Failed to load tweets", err))
+    .finally(() => setLoading(false));
+}, []);
+
 
   return (
     <div className="pt-20 bg-[#121212] min-h-screen">
