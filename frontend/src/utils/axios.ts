@@ -1,9 +1,8 @@
-// src/utils/axios.ts
-import axios from 'axios';
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.VITE_API_URL,
-  withCredentials: true, 
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 });
 
 export default instance;
