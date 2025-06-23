@@ -9,7 +9,6 @@ const projectRoutes = require('./routes/projectRoutes');
 const skillRoutes = require('./routes/skillRoutes');
 const tweetRoutes = require("./routes/tweetRoutes");
 
-
 dotenv.config();
 connectDB();
 
