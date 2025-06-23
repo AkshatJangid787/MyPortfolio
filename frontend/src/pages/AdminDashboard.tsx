@@ -1,20 +1,44 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../utils/axios';
+
+interface Project {
+  _id: string;
+  title: string;
+  description: string;
+  liveLink?: string;
+  githubLink?: string;
+  techStack: string[];
+}
+
+interface NewProjectInput {
+  title: string;
+  description: string;
+  liveLink: string;
+  githubLink: string;
+  techStack: string; // comma-separated for input
+}
+
+interface Skill {
+  _id: string;
+  name: string;
+}
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [projects, setProjects] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [newProject, setNewProject] = useState({
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [skills, setSkills] = useState<Skill[]>([]);
+  const [newProject, setNewProject] = useState<NewProjectInput>({
     title: '', description: '', liveLink: '', githubLink: '', techStack: ''
   });
   const [newSkill, setNewSkill] = useState('');
   const [tweetLoading, setTweetLoading] = useState(false);
-  const [editingProjectId, setEditingProjectId] = useState(null);
-  const [editingSkillId, setEditingSkillId] = useState(null);
-  const [editProjectData, setEditProjectData] = useState({});
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+  const [editingSkillId, setEditingSkillId] = useState<string | null>(null);
+  const [editProjectData, setEditProjectData] = useState<NewProjectInput>({
+    title: '', description: '', liveLink: '', githubLink: '', techStack: ''
+  });
   const [editSkillName, setEditSkillName] = useState('');
 
   useEffect(() => {
@@ -53,15 +77,19 @@ const AdminDashboard = () => {
   };
 
   const handleAddProject = async () => {
-    await axios.post('/projects', {
-      ...newProject,
-      techStack: newProject.techStack.split(',').map((s) => s.trim()),
-    });
-    fetchData();
-    setNewProject({ title: '', description: '', liveLink: '', githubLink: '', techStack: '' });
+    try {
+      await axios.post('/projects', {
+        ...newProject,
+        techStack: newProject.techStack.split(',').map(s => s.trim()).filter(Boolean),
+      });
+      fetchData();
+      setNewProject({ title: '', description: '', liveLink: '', githubLink: '', techStack: '' });
+    } catch (err) {
+      console.error("❌ Add project failed", err);
+    }
   };
 
-  const handleDeleteProject = async (id) => {
+  const handleDeleteProject = async (id: string) => {
     await axios.delete(`/projects/${id}`);
     fetchData();
   };
@@ -72,7 +100,7 @@ const AdminDashboard = () => {
     setNewSkill('');
   };
 
-  const handleDeleteSkill = async (id) => {
+  const handleDeleteSkill = async (id: string) => {
     await axios.delete(`/skills/${id}`);
     fetchData();
   };
@@ -89,41 +117,58 @@ const AdminDashboard = () => {
     }
   };
 
-  const startEditingProject = (project) => {
+  const startEditingProject = (project: Project) => {
     setEditingProjectId(project._id);
     setEditProjectData({
       title: project.title,
       description: project.description,
-      liveLink: project.liveLink,
-      githubLink: project.githubLink,
-      techStack: project.techStack?.join(', ') || ''
+      liveLink: project.liveLink || '',
+      githubLink: project.githubLink || '',
+      techStack: project.techStack.join(', ')
     });
   };
 
   const saveProjectChanges = async () => {
+    if (!editingProjectId) return;
     await axios.put(`/projects/${editingProjectId}`, {
       ...editProjectData,
-      techStack: editProjectData.techStack.split(',').map(s => s.trim()),
+      techStack: editProjectData.techStack.split(',').map(s => s.trim()).filter(Boolean),
     });
     setEditingProjectId(null);
     fetchData();
   };
 
-  const startEditingSkill = (skill) => {
+  const startEditingSkill = (skill: Skill) => {
     setEditingSkillId(skill._id);
     setEditSkillName(skill.name);
   };
 
   const saveSkillChanges = async () => {
+    if (!editingSkillId) return;
     await axios.put(`/skills/${editingSkillId}`, { name: editSkillName });
     setEditingSkillId(null);
     fetchData();
+  };
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    isEdit = false
+  ) => {
+    const { placeholder, value } = e.target;
+    const key = placeholder.toLowerCase().replace(/ /g, '') as keyof NewProjectInput;
+
+    if (isEdit) {
+      setEditProjectData(prev => ({ ...prev, [key]: value }));
+    } else {
+      setNewProject(prev => ({ ...prev, [key]: value }));
+    }
   };
 
   if (loading) return <div className="text-white p-6">Authenticating...</div>;
 
   return (
     <div className="min-h-screen bg-[#0e0e0e] text-white px-4 md:px-8 py-8">
+      {/* Header */}
       <div className="flex justify-between items-center mb-10 border-b border-gray-700 pb-4">
         <h1 className="text-3xl font-bold text-orange-400">🛠️ Admin Dashboard</h1>
         <button
@@ -153,11 +198,8 @@ const AdminDashboard = () => {
             <input
               key={idx}
               placeholder={label}
-              value={newProject[label.toLowerCase().replace(/ /g, '')] || ''}
-              onChange={(e) => setNewProject({
-                ...newProject,
-                [label.toLowerCase().replace(/ /g, '')]: e.target.value
-              })}
+              value={newProject[label.toLowerCase().replace(/ /g, '') as keyof NewProjectInput]}
+              onChange={(e) => handleInputChange(e, false)}
               className="bg-gray-900 border border-gray-700 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           ))}
@@ -173,13 +215,13 @@ const AdminDashboard = () => {
             <div key={project._id} className="bg-gray-900 border border-gray-700 p-4 rounded-md space-y-3 shadow-lg">
               {editingProjectId === project._id ? (
                 <>
-                  {['title', 'description', 'liveLink', 'githubLink', 'techStack'].map((key, i) => (
+                  {['Title', 'Description', 'Live Link', 'GitHub Link', 'Tech Stack'].map((label, i) => (
                     <input
                       key={i}
                       className="w-full bg-gray-800 p-2 rounded-md border border-gray-600"
-                      placeholder={key}
-                      value={editProjectData[key] || ''}
-                      onChange={(e) => setEditProjectData({ ...editProjectData, [key]: e.target.value })}
+                      placeholder={label}
+                      value={editProjectData[label.toLowerCase().replace(/ /g, '') as keyof NewProjectInput]}
+                      onChange={(e) => handleInputChange(e, true)}
                     />
                   ))}
                   <button onClick={saveProjectChanges} className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-sm mt-2 transition">Save</button>
@@ -189,8 +231,13 @@ const AdminDashboard = () => {
                   <h3 className="text-lg font-bold text-orange-400">{project.title}</h3>
                   <p className="text-sm text-gray-300">{project.description}</p>
                   {project.liveLink && (
-                    <a href={project.liveLink} target="_blank" className="text-blue-400 underline text-sm">
+                    <a href={project.liveLink} target="_blank" rel="noreferrer" className="text-blue-400 underline text-sm">
                       Live Link
+                    </a>
+                  )}
+                  {project.githubLink && (
+                    <a href={project.githubLink} target="_blank" rel="noreferrer" className="text-blue-400 underline text-sm block">
+                      GitHub
                     </a>
                   )}
                   <p className="text-sm text-gray-400">Tech Stack: {project.techStack?.join(', ')}</p>
@@ -254,7 +301,6 @@ const AdminDashboard = () => {
       </section>
     </div>
   );
-
 };
 
 export default AdminDashboard;
