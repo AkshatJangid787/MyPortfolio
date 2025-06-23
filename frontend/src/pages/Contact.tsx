@@ -52,7 +52,6 @@ const Contact = () => {
           });
         }
       );
-
   };
 
   return (
@@ -68,7 +67,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
-
+      
       {/* Contact Form and Info */}
       <section className="py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
