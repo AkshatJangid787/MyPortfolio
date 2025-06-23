@@ -74,7 +74,7 @@ const References: React.FC = () => {
       <section className="py-16 px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-psyco-orange-light mb-2">My Projects</h2>
+            <h2 className="text-3xl font-bold text-psyco-orange-light mb-2 animate-fade-in">My Projects</h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               A collection of projects that showcase my skills and passion for creating digital solutions
             </p>
@@ -107,7 +107,7 @@ const References: React.FC = () => {
       <section className="py-16 px-6 md:px-12 bg-psyco-black-light">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-psyco-orange-light mb-2">Technologies I Use</h2>
+            <h2 className="text-3xl font-bold text-psyco-orange-light mb-2 animate-fade-in">Technologies I Use</h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               A comprehensive list of technologies and tools I work with
             </p>

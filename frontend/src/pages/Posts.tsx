@@ -34,7 +34,7 @@ const Posts = () => {
       {/* Hero Section */}
       <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl font-bold text-[#FF8C42] mb-4">My Posts</h1>
+          <h1 className="text-4xl font-bold text-[#FF8C42] mb-4 animate-fade-in">My Posts</h1>
           <p className="text-lg text-gray-400">Latest updates from my social media</p>
         </div>
       </section>

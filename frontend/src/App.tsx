@@ -27,7 +27,7 @@ const App = () => {
     // Set minimum preloader duration of 4 seconds
     const timer = setTimeout(() => {
       setShowPreloader(false);
-    }, 4000);
+    }, 6000);
 
     return () => clearTimeout(timer);
   }, []);

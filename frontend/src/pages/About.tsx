@@ -9,7 +9,7 @@ const About = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Replace 'your-username' with your actual LeetCode username
+  
   const leetCodeStats = useLeetCode('AkshatJangid787');
 
   const certifications = [
@@ -91,7 +91,7 @@ const About = () => {
       {/* Hero Section */}
       <section className="py-12 md:py-16 px-4 md:px-6 lg:px-12">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-psyco-orange-light mb-4 md:mb-6">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-psyco-orange-light mb-4 md:mb-6 animate-fade-in">
             About My Journey
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
