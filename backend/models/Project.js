@@ -11,9 +11,11 @@ const projectSchema = new mongoose.Schema({
   },
   liveLink: {
     type: String,
+    default: ''
   },
   githubLink: {
     type: String,
+    default: ''
   },
   techStack: {
     type: [String],

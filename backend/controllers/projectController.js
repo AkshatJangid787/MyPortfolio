@@ -10,31 +10,46 @@ exports.getAllProjects = async (req, res) => {
   }
 };
 
-// POST new project (protected)
+// POST new project
 exports.createProject = async (req, res) => {
   try {
-    const newProject = new Project(req.body);
+    const { title, description, liveLink, githubLink, techStack } = req.body;
+
+    if (!title || !description || !techStack || !Array.isArray(techStack)) {
+      return res.status(400).json({ message: 'Missing or invalid fields' });
+    }
+
+    const newProject = new Project({ title, description, liveLink, githubLink, techStack });
     await newProject.save();
     res.status(201).json(newProject);
   } catch (err) {
-    res.status(400).json({ message: 'Failed to create project' });
+    res.status(400).json({ message: 'Failed to create project', error: err.message });
   }
 };
 
-// PUT update project (protected)
+// PUT update project
 exports.updateProject = async (req, res) => {
   try {
-    const updated = await Project.findByIdAndUpdate(req.params.id, req.body, {
-      new: true
-    });
+    const { title, description, liveLink, githubLink, techStack } = req.body;
+
+    if (!title || !description || !techStack || !Array.isArray(techStack)) {
+      return res.status(400).json({ message: 'Missing or invalid fields' });
+    }
+
+    const updated = await Project.findByIdAndUpdate(
+      req.params.id,
+      { title, description, liveLink, githubLink, techStack },
+      { new: true }
+    );
+
     if (!updated) return res.status(404).json({ message: 'Project not found' });
     res.json(updated);
   } catch (err) {
-    res.status(400).json({ message: 'Failed to update project' });
+    res.status(400).json({ message: 'Failed to update project', error: err.message });
   }
 };
 
-// DELETE project (protected)
+// DELETE project
 exports.deleteProject = async (req, res) => {
   try {
     const deleted = await Project.findByIdAndDelete(req.params.id);
