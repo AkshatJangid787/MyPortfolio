@@ -1,8 +1,8 @@
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useState } from "react";
 import { Twitter } from "lucide-react";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import axios from "@/utils/axios";
-import LazyTwitterTweetEmbed from "@/components/LazyTwitterEmbed"; // 🔥 Lazy import
+import TwitterEmbed from "@/components/TwitterEmbed";
 
 const Skeleton = () => (
   <div className="w-full h-full bg-neutral-800 rounded-xl animate-pulse min-h-[400px]" />
@@ -65,9 +65,7 @@ const Posts = () => {
                   icon={<Twitter className="w-4 h-4 text-blue-500" />}
                   header={
                     <div className="w-full h-full overflow-auto max-h-[400px] rounded-xl">
-                      <Suspense fallback={<Skeleton />}>
-                        <LazyTwitterTweetEmbed tweetId={id} options={{ theme: "dark" }} />
-                      </Suspense>
+                      <TwitterEmbed tweetId={id} />
                     </div>
                   }
                 />
