@@ -12,6 +12,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 router.post('/', authMiddleware, createProject);
 router.put('/:id', authMiddleware, updateProject);
 router.delete('/:id', authMiddleware, deleteProject);
+const isAuthenticated = require('../middlewares/authMiddleware');
 
 // Public
 router.get('/', getAllProjects);
