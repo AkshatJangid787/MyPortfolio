@@ -4,14 +4,16 @@ const {
   getAllProjects,
   createProject,
   updateProject,
-  deleteProject
+  deleteProject,
 } = require('../controllers/projectController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-const isAuthenticated = require('../middlewares/isAuthenticated'); // if you have auth
+// Protected (admin only)
+router.post('/', authMiddleware, createProject);
+router.put('/:id', authMiddleware, updateProject);
+router.delete('/:id', authMiddleware, deleteProject);
 
+// Public
 router.get('/', getAllProjects);
-router.post('/', isAuthenticated, createProject);
-router.put('/:id', isAuthenticated, updateProject);
-router.delete('/:id', isAuthenticated, deleteProject);
 
 module.exports = router;
