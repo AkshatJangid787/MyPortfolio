@@ -2,9 +2,23 @@ import React, { useEffect, useState } from "react";
 import ProjectCard from "@/components/ProjectCard";
 import axios from "@/utils/axios";
 
-const References = () => {
-  const [projects, setProjects] = useState([]);
-  const [skills, setSkills] = useState([]);
+interface Project {
+  _id: string;
+  title: string;
+  description: string;
+  techStack?: string[];
+  liveLink?: string;
+  githubLink?: string;
+}
+
+interface Skill {
+  _id: string;
+  name: string;
+}
+
+const References: React.FC = () => {
+  const [projects, setProjects] = useState<Project[] | null>(null);
+  const [skills, setSkills] = useState<Skill[] | null>(null);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [loadingSkills, setLoadingSkills] = useState(true);
 
@@ -16,10 +30,16 @@ const References = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await axios.get('/projects');
-        setProjects(res.data);
+        const res = await axios.get("/projects");
+        if (Array.isArray(res.data)) {
+          setProjects(res.data);
+        } else {
+          console.error("Unexpected projects response:", res.data);
+          setProjects(null);
+        }
       } catch (error) {
         console.error("Failed to fetch projects:", error);
+        setProjects(null);
       } finally {
         setLoadingProjects(false);
       }
@@ -31,10 +51,16 @@ const References = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await axios.get('/skills');
-        setSkills(res.data);
+        const res = await axios.get("/skills");
+        if (Array.isArray(res.data)) {
+          setSkills(res.data);
+        } else {
+          console.error("Unexpected skills response:", res.data);
+          setSkills(null);
+        }
       } catch (error) {
         console.error("Failed to fetch skills:", error);
+        setSkills(null);
       } finally {
         setLoadingSkills(false);
       }
@@ -56,7 +82,7 @@ const References = () => {
 
           {loadingProjects ? (
             <p className="text-center text-gray-400">Loading projects...</p>
-          ) : (
+          ) : projects && projects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {projects.map((project, index) => (
                 <ProjectCard
@@ -64,13 +90,15 @@ const References = () => {
                   title={project.title}
                   description={project.description}
                   tags={project.techStack || []}
-                  liveUrl={project.liveLink || '#'}
-                  githubUrl={project.githubLink || '#'}
+                  liveUrl={project.liveLink || "#"}
+                  githubUrl={project.githubLink || "#"}
                   className="animate-fade-in"
                   style={{ animationDelay: `${index * 100}ms` }}
                 />
               ))}
             </div>
+          ) : (
+            <p className="text-center text-red-400">No projects found.</p>
           )}
         </div>
       </section>
@@ -87,7 +115,7 @@ const References = () => {
 
           {loadingSkills ? (
             <p className="text-center text-gray-400">Loading skills...</p>
-          ) : (
+          ) : skills && skills.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
               {skills.map((skill, index) => (
                 <div
@@ -101,6 +129,8 @@ const References = () => {
                 </div>
               ))}
             </div>
+          ) : (
+            <p className="text-center text-red-400">No skills found.</p>
           )}
         </div>
       </section>
