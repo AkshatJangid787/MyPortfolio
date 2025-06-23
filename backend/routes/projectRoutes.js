@@ -7,7 +7,7 @@ const {
   deleteProject
 } = require('../controllers/projectController');
 
-const isAuthenticated = require('../middlewares/isAuthenticated'); // if you have auth
+const isAuthenticated = require('../middlewares/authMiddleware');
 
 router.get('/', getAllProjects);
 router.post('/', isAuthenticated, createProject);
