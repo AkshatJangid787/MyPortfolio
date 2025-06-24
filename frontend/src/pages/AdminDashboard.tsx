@@ -1,30 +1,41 @@
-import { useEffect, useState, ChangeEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from '../utils/axios';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../utils/axios";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [projects, setProjects] = useState<any[]>([]);
   const [skills, setSkills] = useState<any[]>([]);
+  const [tweetIds, setTweetIds] = useState<string[]>([]);
+  const [newTweetId, setNewTweetId] = useState("");
+
   const [newProject, setNewProject] = useState({
-    title: '', description: '', liveLink: '', githubLink: '', techStack: ''
+    title: "",
+    description: "",
+    liveLink: "",
+    githubLink: "",
+    techStack: ""
   });
-  const [newSkill, setNewSkill] = useState('');
+  const [newSkill, setNewSkill] = useState("");
   const [tweetLoading, setTweetLoading] = useState(false);
+
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [editingSkillId, setEditingSkillId] = useState<string | null>(null);
   const [editProjectData, setEditProjectData] = useState<any>({});
-  const [editSkillName, setEditSkillName] = useState('');
+  const [editSkillName, setEditSkillName] = useState("");
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get('/auth/check');
-        if (!res.data.isAuthenticated) navigate('/akshu-secret-login');
-        else fetchData();
+        const res = await axios.get("/auth/check");
+        if (!res.data.isAuthenticated) navigate("/akshu-secret-login");
+        else {
+          fetchData();
+          fetchTweetIds();
+        }
       } catch {
-        navigate('/akshu-secret-login');
+        navigate("/akshu-secret-login");
       }
     };
     checkAuth();
@@ -33,24 +44,56 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       const [projectsRes, skillsRes] = await Promise.all([
-        axios.get('/projects'),
-        axios.get('/skills'),
+        axios.get("/projects"),
+        axios.get("/skills"),
       ]);
       setProjects(projectsRes.data);
       setSkills(skillsRes.data);
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching data:', err);
+      console.error("Error fetching data:", err);
+    }
+  };
+
+  const fetchTweetIds = async () => {
+    try {
+      const res = await axios.get("/tweets/all");
+      setTweetIds(res.data.tweets);
+    } catch (err) {
+      console.error("Failed to fetch tweet IDs:", err);
+    }
+  };
+
+  const handleAddTweet = async () => {
+    if (!newTweetId.trim()) {
+      alert("Tweet ID is required");
+      return;
+    }
+
+    try {
+      const res = await axios.post("/tweets/add", { tweetId: newTweetId });
+      alert(res.data.message || "Tweet added successfully");
+      setNewTweetId("");
+      fetchTweetIds();
+    } catch (err: any) {
+      alert(err.response?.data?.error || "Failed to add tweet");
+      console.error("Error adding tweet:", err);
     }
   };
 
   const handleAddProject = async () => {
-    await axios.post('/projects', {
+    await axios.post("/projects", {
       ...newProject,
-      techStack: newProject.techStack.split(',').map((s) => s.trim()),
+      techStack: newProject.techStack.split(",").map((s) => s.trim()),
     });
     fetchData();
-    setNewProject({ title: '', description: '', liveLink: '', githubLink: '', techStack: '' });
+    setNewProject({
+      title: "",
+      description: "",
+      liveLink: "",
+      githubLink: "",
+      techStack: ""
+    });
   };
 
   const handleDeleteProject = async (id: string) => {
@@ -59,26 +102,14 @@ const AdminDashboard = () => {
   };
 
   const handleAddSkill = async () => {
-    await axios.post('/skills', { name: newSkill });
+    await axios.post("/skills", { name: newSkill });
     fetchData();
-    setNewSkill('');
+    setNewSkill("");
   };
 
   const handleDeleteSkill = async (id: string) => {
     await axios.delete(`/skills/${id}`);
     fetchData();
-  };
-
-  const fetchLatestTweets = async () => {
-    try {
-      setTweetLoading(true);
-      const res = await axios.post('/tweets/fetch-latest');
-      alert(res.data.message);
-    } catch {
-      alert("Failed to fetch tweets");
-    } finally {
-      setTweetLoading(false);
-    }
   };
 
   const startEditingProject = (project: any) => {
@@ -88,7 +119,7 @@ const AdminDashboard = () => {
       description: project.description,
       liveLink: project.liveLink,
       githubLink: project.githubLink,
-      techStack: project.techStack?.join(', ') || ''
+      techStack: project.techStack?.join(", ") || ""
     });
   };
 
@@ -96,7 +127,7 @@ const AdminDashboard = () => {
     if (!editingProjectId) return;
     await axios.put(`/projects/${editingProjectId}`, {
       ...editProjectData,
-      techStack: editProjectData.techStack.split(',').map((s: string) => s.trim())
+      techStack: editProjectData.techStack.split(",").map((s: string) => s.trim())
     });
     setEditingProjectId(null);
     fetchData();
@@ -120,37 +151,60 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-[#0e0e0e] text-white px-4 md:px-8 py-8">
       <div className="flex justify-between items-center mb-10 border-b border-gray-700 pb-4">
         <h1 className="text-3xl font-bold text-orange-400">🛠️ Admin Dashboard</h1>
-        <button onClick={() => { axios.post('/auth/logout'); navigate('/'); }} className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-medium transition">
+        <button
+          onClick={() => {
+            axios.post("/auth/logout");
+            navigate("/");
+          }}
+          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-medium transition"
+        >
           Logout
         </button>
       </div>
 
-      <div className="mb-10">
-        <button onClick={fetchLatestTweets} disabled={tweetLoading} className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition">
-          {tweetLoading ? 'Fetching Tweets...' : '📥 Fetch Latest Tweets'}
-        </button>
+      {/* Add Tweet Manually */}
+      <div className="mb-10 space-y-3">
+        <h2 className="text-xl font-semibold text-orange-300">📥 Add Tweet Manually</h2>
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+          <input
+            type="text"
+            placeholder="Enter Tweet ID"
+            value={newTweetId}
+            onChange={(e) => setNewTweetId(e.target.value)}
+            className="bg-gray-900 border border-gray-700 p-2 rounded-md w-full sm:w-64"
+          />
+          <button
+            onClick={handleAddTweet}
+            className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium transition"
+          >
+            ➕ Add Tweet
+          </button>
+        </div>
       </div>
 
+      {/* Add Project */}
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4 text-orange-300">➕ Add Project</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-          {['title', 'description', 'liveLink', 'githubLink', 'techStack'].map((key, idx) => (
+          {["title", "description", "liveLink", "githubLink", "techStack"].map((key, idx) => (
             <input
               key={idx}
               placeholder={key}
-              value={newProject[key as keyof typeof newProject] || ''}
-              onChange={(e) =>
-                setNewProject({ ...newProject, [key]: e.target.value })
-              }
+              value={newProject[key as keyof typeof newProject] || ""}
+              onChange={(e) => setNewProject({ ...newProject, [key]: e.target.value })}
               className="bg-gray-900 border border-gray-700 p-2 rounded-md"
             />
           ))}
         </div>
-        <button onClick={handleAddProject} className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md text-sm font-medium transition">
+        <button
+          onClick={handleAddProject}
+          className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md text-sm font-medium transition"
+        >
           Add Project
         </button>
       </section>
 
+      {/* Projects List */}
       <section className="mb-12">
         <h2 className="text-2xl font-semibold mb-4 text-orange-300">📦 Projects</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -158,18 +212,19 @@ const AdminDashboard = () => {
             <div key={project._id} className="bg-gray-900 border border-gray-700 p-4 rounded-md space-y-3 shadow-lg">
               {editingProjectId === project._id ? (
                 <>
-                  {['title', 'description', 'liveLink', 'githubLink', 'techStack'].map((key, i) => (
+                  {["title", "description", "liveLink", "githubLink", "techStack"].map((key, i) => (
                     <input
                       key={i}
                       className="w-full bg-gray-800 p-2 rounded-md border border-gray-600"
                       placeholder={key}
-                      value={editProjectData[key] || ''}
-                      onChange={(e) =>
-                        setEditProjectData({ ...editProjectData, [key]: e.target.value })
-                      }
+                      value={editProjectData[key] || ""}
+                      onChange={(e) => setEditProjectData({ ...editProjectData, [key]: e.target.value })}
                     />
                   ))}
-                  <button onClick={saveProjectChanges} className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-sm mt-2 transition">
+                  <button
+                    onClick={saveProjectChanges}
+                    className="bg-green-600 hover:bg-green-700 px-3 py-1 rounded-md text-sm mt-2 transition"
+                  >
                     Save
                   </button>
                 </>
@@ -187,7 +242,7 @@ const AdminDashboard = () => {
                       GitHub
                     </a>
                   )}
-                  <p className="text-sm text-gray-400">Tech Stack: {project.techStack?.join(', ')}</p>
+                  <p className="text-sm text-gray-400">Tech Stack: {project.techStack?.join(", ")}</p>
                   <div className="flex gap-3 mt-2">
                     <button onClick={() => startEditingProject(project)} className="text-yellow-400 hover:underline text-sm">Edit</button>
                     <button onClick={() => handleDeleteProject(project._id)} className="text-red-400 hover:underline text-sm">Delete</button>
@@ -199,6 +254,7 @@ const AdminDashboard = () => {
         </div>
       </section>
 
+      {/* Skills */}
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-4 text-orange-300">➕ Add Skill</h2>
         <div className="flex flex-col sm:flex-row gap-3">
