@@ -31,9 +31,8 @@ const Services = () => {
       description: "Creating robust server-side applications and APIs with scalable architecture.",
       features: [
         "Node.js & Express.js",
-        "Python & Django/Flask",
         "PostgreSQL & MongoDB",
-        "RESTful APIs & GraphQL",
+        "RESTful APIs",
         "Authentication & Authorization",
         "Database Design & Optimization"
       ]
@@ -63,28 +62,13 @@ const Services = () => {
     {
       icon: <Cloud size={24} />,
       title: "Cloud Services",
-      description: "AWS, Vercel, and Firebase deployment solutions."
+      description: "AWS, Vercel, Render and Firebase deployment solutions."
     },
     {
       icon: <GitBranch size={24} />,
       title: "Version Control",
       description: "Git, GitHub workflows, and collaborative development."
     },
-    {
-      icon: <Zap size={24} />,
-      title: "Performance Optimization",
-      description: "Code splitting, lazy loading, and SEO optimization."
-    },
-    {
-      icon: <Monitor size={24} />,
-      title: "UI/UX Design",
-      description: "Figma, prototyping, and user-centered design."
-    },
-    {
-      icon: <Shield size={24} />,
-      title: "Security & Testing",
-      description: "Unit testing, integration testing, and security best practices."
-    }
   ];
 
   return (

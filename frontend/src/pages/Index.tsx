@@ -36,13 +36,13 @@ const Index = () => {
       icon: <Code size={24} />
     },
     {
-      title: "UI/UX Design",
-      description: "Creating beautiful and intuitive user interfaces and experiences",
-      icon: <Palette size={24} />
+      title: "Backend Development",
+      description: "Backend development with databases and API integration",
+      icon: <Database size={24} />
     },
     {
       title: "Full Stack Development",
-      description: "Backend development with databases and API integration",
+      description: "Frontend + Backend development with databases, API integration and deployment",
       icon: <Database size={24} />
     }
   ];

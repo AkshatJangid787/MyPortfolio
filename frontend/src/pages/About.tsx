@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { Award, Briefcase, GraduationCap, Calendar, MapPin, Trophy, Code } from "lucide-react";
+import { Award, Briefcase, GraduationCap, Calendar, MapPin, Trophy, Code, Link, MoveRight } from "lucide-react";
 import { useLeetCode } from "@/hooks/useLeetCode";
 
 const About = () => {
@@ -13,35 +13,54 @@ const About = () => {
   const leetCodeStats = useLeetCode('AkshatJangid787');
 
   const certifications = [
-    {
-      title: "Full Stack Web Development",
-      issuer: "FreeCodeCamp",
-      date: "2023",
-      description: "Comprehensive certification covering HTML, CSS, JavaScript, React, Node.js, and database management.",
-      icon: <GraduationCap className="h-6 w-6" />
-    },
-    {
-      title: "React Developer Certification",
-      issuer: "Meta",
-      date: "2023",
-      description: "Advanced React concepts including hooks, context, performance optimization, and testing.",
-      icon: <Award className="h-6 w-6" />
-    },
-    {
-      title: "AWS Cloud Practitioner",
-      issuer: "Amazon Web Services",
-      date: "2022",
-      description: "Cloud fundamentals, AWS services, security, and best practices for cloud deployment.",
-      icon: <Trophy className="h-6 w-6" />
-    }
-  ];
+  {
+    title: "Full Stack Web Development",
+    issuer: "Grras",
+    date: "2024",
+    description:
+      "Learned end-to-end web development including HTML, CSS, JavaScript, React, Node.js, Express, and MongoDB with hands-on projects.",
+    icon: <GraduationCap className="h-6 w-6" />
+  },
+  {
+    title: "Postman - API Fundamentals Student Expert",
+    issuer: "Postman",
+    date: "2024",
+    description:
+      "Gained proficiency in API testing, requests, responses, environment variables, and building workflows using Postman.",
+    icon: <Award className="h-6 w-6" />
+  },
+  {
+    title: "MySQL",
+    issuer: "Simplilearn",
+    date: "2024",
+    description:
+      "Covered relational database concepts, CRUD operations, joins, indexing, and writing complex SQL queries using MySQL.",
+    icon: <Trophy className="h-6 w-6" />
+  },
+  {
+    title: "Cybersecurity Fundamentals",
+    issuer: "IBM SkillBuild CSRBOX",
+    date: "2024",
+    description:
+      "Introduced to cybersecurity principles, common threats, cryptography, network security, and best practices to stay protected online.",
+    icon: <Trophy className="h-6 w-6" />
+  },
+  {
+    title: "CS50x",
+    issuer: "Harvard University (edX)",
+    date: "2023",
+    description:
+      "Completed Harvard's CS50x course covering computer science fundamentals including C, algorithms, data structures, web, and Python.",
+    icon: <Trophy className="h-6 w-6" />
+  }
+];
 
   const experiences = [
     {
       title: "Full Stack Developer (Project-Based)",
       company: "Personal Projects",
       location: "Remote",
-      period: "2023 - Present",
+      period: "2024 - Present",
       description: "Designed and developed multiple full-stack applications using the MERN stack, including an eCommerce platform with authentication, cart, and order tracking features. Implemented responsive UIs, REST APIs, and integrated third-party services.",
       technologies: ["React", "Node.js", "MongoDB", "Tailwind CSS", "Express.js", "Many More"]
     },
@@ -154,7 +173,7 @@ const About = () => {
               >
                 <div className="flex flex-col gap-4 md:gap-6">
                   <div className="flex-1">
-                    <h3 className="text-lg md:text-xl font-semibold text-white mb-2">{exp.title}</h3>
+                    <h3 className="text-lg md:text-xl font-semibold text-white mb-2 hover:text-psyco-orange-light transition-colors">{exp.title}</h3>
                     <div className="flex flex-col gap-2 mb-4 text-sm md:text-base text-gray-300">
                       <span className="font-medium text-orange-400">{exp.company}</span>
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
@@ -199,6 +218,14 @@ const About = () => {
             <p className="text-gray-400 max-w-2xl mx-auto px-4">
               Professional certifications that validate my skills and knowledge
             </p>
+            <a
+              href="https://github.com/AkshatJangid787/certifications"
+              target="_blank"
+              className="mt-4 pt-4 sm:mt-0 flex items-center text-psyco-green-DEFAULT hover:text-orange-400 transition-colors"
+            >
+              View all certifications on GitHub
+              <MoveRight className="ml-1 h-4 w-4" />
+            </a>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
@@ -213,7 +240,7 @@ const About = () => {
                     {cert.icon}
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">{cert.title}</h3>
+                <h3 className="text-lg font-semibold text-white mb-2 hover:text-psyco-orange-light transition-colors">{cert.title}</h3>
                 <p className="text-orange-400 font-medium mb-2">{cert.issuer}</p>
                 <p className="text-gray-400 text-sm mb-3">{cert.date}</p>
                 <p className="text-gray-300 text-sm">{cert.description}</p>
