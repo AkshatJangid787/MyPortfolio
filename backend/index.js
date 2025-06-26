@@ -14,11 +14,11 @@ connectDB();
 
 const app = express();
 
-// ✅ Middleware
+// Middleware
 app.use(cookieParser());
 app.use(express.json());
 
-// ✅ Secure CORS config
+// Secure CORS config
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
@@ -26,12 +26,12 @@ app.use(
   })
 );
 
-// ✅ Routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/skills', skillRoutes);
 app.use("/api/tweets", tweetRoutes);
 
-// ✅ Server Start
+// Server Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

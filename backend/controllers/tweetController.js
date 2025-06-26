@@ -1,7 +1,7 @@
 const axios = require("axios");
 const Tweet = require("../models/Tweet");
 
-// ✅ GET all tweets (frontend will call this)
+// GET all tweets (frontend will call this)
 const getTweets = async (req, res) => {
   try {
     const tweets = await Tweet.find().sort({ addedAt: -1 }); // latest first
@@ -11,7 +11,7 @@ const getTweets = async (req, res) => {
   }
 };
 
-// ✅ POST add single tweet manually (optional for admin panel)
+// POST add single tweet manually (optional for admin panel)
 const addTweet = async (req, res) => {
   const { tweetId } = req.body;
   if (!tweetId) return res.status(400).json({ error: "Tweet ID is required" });
@@ -35,7 +35,7 @@ const addTweet = async (req, res) => {
   }
 };
 
-// ✅ GET from Twitter API & update DB (called only 2 times a day)
+// GET from Twitter API & update DB (called only 2 times a day)
 const fetchLatestFromTwitter = async (req, res) => {
   try {
     const { TWITTER_BEARER_TOKEN, TWITTER_USERNAME } = process.env;

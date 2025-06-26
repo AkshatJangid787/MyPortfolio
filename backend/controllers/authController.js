@@ -18,7 +18,7 @@ exports.login = async (req, res) => {
       expiresIn: '2h',
     });
 
-    // ✅ Set JWT in secure HTTP-only cookie
+    // Set JWT in secure HTTP-only cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
